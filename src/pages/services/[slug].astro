@@ -1,0 +1,216 @@
+---
+import Base from "@/layouts/Base.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BreadcrumbNav from "@/components/BreadcrumbNav";
+import LeadCaptureBlock from "@/components/LeadCaptureBlock";
+import { getServiceBySlug, servicePages } from "@/data/services";
+import { Phone, MessageCircle, CheckCircle2, Clock, Shield, Award, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export function getStaticPaths() {
+  return servicePages.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+
+if (!service) {
+  return Astro.redirect("/");
+}
+
+const relatedServices = servicePages.filter((s) =>
+  service.relatedServiceSlugs.includes(s.slug)
+);
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: service.name,
+  description: service.metaDescription,
+  provider: {
+    "@type": "Plumber",
+    name: "ואקנין אינסטלציה",
+    telephone: "+972528126653",
+    url: "https://vaknin-plumbing.co.il",
+  },
+  areaServed: "מרכז ישראל",
+  url: `https://vaknin-plumbing.co.il/services/${service.slug}`,
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: service.faqs.map((f) => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer },
+  })),
+};
+---
+
+<Base 
+  title={service.title} 
+  description={service.metaDescription}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <Navbar client:load />
+
+  <main>
+    {/* Hero */}
+    <section class="bg-primary/5 py-12 md:py-16 lg:py-20">
+      <div class="container px-4 sm:px-6 relative z-10 w-full text-right">
+        <div class="flex flex-col items-start w-full">
+        <BreadcrumbNav
+          client:load
+          items={[
+            { label: "ראשי", href: "/" },
+            { label: "שירותים", href: "/#services" },
+            { label: service.name },
+          ]}
+        />
+        <div class="max-w-3xl">
+          <span class="text-4xl md:text-5xl mb-3 md:mb-4 block">{service.icon}</span>
+          <h1 class="font-heading text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 md:mb-6 leading-tight">
+            {service.h1}
+          </h1>
+          <p class="text-muted-foreground text-sm md:text-lg leading-relaxed mb-6 md:mb-8">
+            {service.intro}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <Button variant="hero" size="xl" client:load asChild>
+              <a href="tel:+972528126653">
+                <Phone className="w-5 h-5" />
+                התקשרו עכשיו
+              </a>
+            </Button>
+            <Button variant="hero-outline" size="xl" client:load className="border-accent text-accent hover:bg-accent/10" asChild>
+              <a href="https://wa.me/972528126653" target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="w-5 h-5" />
+                וואטסאפ
+              </a>
+            </Button>
+          </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Benefits */}
+    <section class="py-10 md:py-16 container px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+        {service.benefits.map((benefit, i) => (
+          <div key={i} class="flex items-center gap-3 bg-card border border-border rounded-xl p-5">
+            <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+            <span class="text-foreground font-medium">{benefit}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Trust bar */}
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-10 md:mb-16">
+        {[
+          { icon: Clock, label: "הגעה מהירה", value: "30-60 דק'" },
+          { icon: Shield, label: "אחריות מלאה", value: "עד שנה" },
+          { icon: Award, label: "ניסיון", value: "15+ שנה" },
+          { icon: Star, label: "שביעות רצון", value: "98%" },
+        ].map((item) => (
+          <div key={item.label} class="text-center bg-secondary rounded-xl p-5">
+            <item.icon className="w-8 h-8 text-primary mx-auto mb-2" />
+            <div class="font-heading font-bold text-foreground text-lg">{item.value}</div>
+            <div class="text-muted-foreground text-sm">{item.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Process */}
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">
+          איך אנחנו עובדים
+        </h2>
+        <div class="space-y-6 max-w-3xl mx-auto">
+          {service.process.map((step, i) => (
+            <div key={i} class="flex gap-5 bg-card border border-border rounded-xl p-6">
+              <span class="bg-primary text-primary-foreground w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                {i + 1}
+              </span>
+              <div>
+                <h3 class="font-heading font-bold text-foreground text-lg mb-2">{step.title}</h3>
+                <p class="text-muted-foreground leading-relaxed">{step.content}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Technologies */}
+      <section class="mb-16">
+        <div class="text-center mb-8">
+          <h2 class="font-heading text-2xl md:text-3xl font-bold text-foreground">
+            הציוד והטכנולוגיות שלנו
+          </h2>
+          <p class="text-muted-foreground mt-2 max-w-xl mx-auto">
+            אנחנו משתמשים אך ורק בציוד מקצועי מהחברות המובילות בעולם
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+          {service.technologies.map((tech, i) => (
+            <div key={i} class="bg-card border border-border rounded-xl p-6 hover:border-primary/30 hover:shadow-md transition-all">
+              <div class="flex items-start justify-between mb-3">
+                <h3 class="font-heading font-bold text-foreground text-lg">{tech.name}</h3>
+                <span class="bg-accent/5 text-accent text-xs font-bold px-3 py-1 rounded-md flex-shrink-0">
+                  {tech.brand}
+                </span>
+              </div>
+              <p class="text-muted-foreground text-sm leading-relaxed">{tech.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section class="mb-16">
+        <h2 class="font-heading text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">
+          שאלות נפוצות
+        </h2>
+        <div class="space-y-4 max-w-3xl mx-auto">
+          {service.faqs.map((faq, i) => (
+            <div key={i} class="bg-secondary rounded-xl p-6">
+              <h3 class="font-heading font-semibold text-foreground mb-2">{faq.question}</h3>
+              <p class="text-muted-foreground">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <LeadCaptureBlock client:load />
+
+      {/* Related services */}
+      {relatedServices.length > 0 && (
+        <section class="mt-12">
+          <h2 class="font-heading text-xl font-bold text-foreground mb-4">שירותים נוספים</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {relatedServices.map((s) => (
+              <a
+                key={s.slug}
+                href={`/services/${s.slug}`}
+                class="bg-card border border-border rounded-xl p-5 hover:border-primary/30 hover:shadow-md transition-all group text-center no-underline"
+              >
+                <span class="text-3xl mb-2 block">{s.icon}</span>
+                <h3 class="font-heading font-semibold text-foreground group-hover:text-primary transition-colors">
+                  {s.name}
+                </h3>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </section>
+  </main>
+
+  <Footer client:load />
+</Base>

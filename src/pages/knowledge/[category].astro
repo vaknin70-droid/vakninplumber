@@ -1,0 +1,77 @@
+---
+import Base from "@/layouts/Base.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BreadcrumbNav from "@/components/BreadcrumbNav";
+import LeadCaptureBlock from "@/components/LeadCaptureBlock";
+import { categories, articles } from "@/data/articles";
+import { BookOpen, ArrowRight } from "lucide-react";
+
+export function getStaticPaths() {
+  return categories.map((cat) => ({
+    params: { category: cat.slug },
+    props: { category: cat },
+  }));
+}
+
+const { category } = Astro.props;
+const categoryArticles = articles.filter((a) => a.categorySlug === category.slug);
+
+if (!category) {
+  return Astro.redirect("/knowledge");
+}
+---
+
+<Base 
+  title={`${category.name} — מדריכים וטיפים | ואקנין אינסטלציה`} 
+  description={category.description}
+>
+  <Navbar client:load />
+
+  <main class="container py-12 px-4 sm:px-6">
+    <div class="flex flex-col items-end">
+      <BreadcrumbNav
+        client:load
+        items={[
+          { label: "ראשי", href: "/" },
+          { label: "מרכז הידע", href: "/knowledge" },
+          { label: category.name },
+        ]}
+      />
+
+      <div class="max-w-4xl mx-auto w-full text-right">
+        <h1 class="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-foreground mb-4">
+          מדריכי {category.name}
+        </h1>
+        <p class="text-muted-foreground text-lg mb-12">
+          {category.description}
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+          {categoryArticles.map((article) => (
+            <a
+              key={article.slug}
+              href={`/knowledge/${category.slug}/${article.slug}`}
+              class="group flex flex-col bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 no-underline text-right"
+            >
+              <h3 class="font-heading font-bold text-lg text-foreground group-hover:text-primary transition-colors mb-3 leading-snug">
+                {article.h1}
+              </h3>
+              <p class="text-slate-500 text-sm line-clamp-3 mb-6 flex-grow">
+                {article.intro}
+              </p>
+              <div class="flex items-center text-primary text-sm font-bold group-hover:text-accent transition-colors mt-auto justify-end">
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:-translate-x-1 transition-transform" />
+                קרא את המדריך
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <LeadCaptureBlock client:load />
+      </div>
+    </div>
+  </main>
+
+  <Footer client:load />
+</Base>

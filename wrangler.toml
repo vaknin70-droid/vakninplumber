@@ -1,0 +1,11 @@
+name = "vak-plumbing-emdash"
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "vak-plumbing-db"
+database_id = "your-database-id-here" # ייווצר כשתקים את ה-DB בקלאודפלר
+
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "vak-plumbing-assets"
