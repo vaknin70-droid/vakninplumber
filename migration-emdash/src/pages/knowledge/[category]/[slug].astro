@@ -1,0 +1,137 @@
+---
+import Base from "@/layouts/Base.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import BreadcrumbNav from "@/components/BreadcrumbNav";
+import LeadCaptureBlock from "@/components/LeadCaptureBlock";
+import { categories, articles } from "@/data/articles";
+
+export function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { 
+      category: article.categorySlug,
+      slug: article.slug 
+    },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const category = categories.find((c) => c.slug === article.categorySlug);
+
+if (!article || !category) {
+  return Astro.redirect("/knowledge");
+}
+
+const related = articles.filter((a) => article.relatedSlugs.includes(a.slug));
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: article.faqs.map((f) => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer },
+  })),
+};
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: article.h1,
+  description: article.metaDescription,
+  author: { "@type": "Organization", name: "ואקנין אינסטלציה" },
+  publisher: { "@type": "Organization", name: "ואקנין אינסטלציה" },
+  mainEntityOfPage: `https://vaknin-plumbing.co.il/knowledge/${article.categorySlug}/${article.slug}`,
+};
+---
+
+<Base 
+  title={article.title} 
+  description={article.metaDescription}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <Navbar client:load />
+
+  <main class="container py-12 px-4 sm:px-6">
+    <div class="flex flex-col items-end">
+      <BreadcrumbNav
+        client:load
+        items={[
+          { label: "ראשי", href: "/" },
+          { label: "מרכז הידע", href: "/knowledge" },
+          { label: category.name, href: `/knowledge/${category.slug}` },
+          { label: article.h1 },
+        ]}
+      />
+
+      <article class="max-w-3xl mx-auto text-right w-full">
+        <h1 class="font-heading text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-4 md:mb-6 leading-tight">
+          {article.h1}
+        </h1>
+        <p class="text-muted-foreground text-sm md:text-lg leading-relaxed mb-8 md:mb-10">
+          {article.intro}
+        </p>
+
+        {/* Steps */}
+        <div class="space-y-4 md:space-y-8 mb-10 md:mb-12">
+          {article.steps.map((step, i) => (
+            <section key={i} class="bg-card border border-border rounded-xl p-4 md:p-6 text-right">
+              <h2 class="font-heading text-base md:text-xl font-bold text-foreground mb-2 md:mb-3 flex items-start gap-2 md:gap-3 flex-row-reverse">
+                <span class="bg-primary text-primary-foreground w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold flex-shrink-0 mt-0.5">
+                  {i + 1}
+                </span>
+                <span class="leading-snug">{step.title}</span>
+              </h2>
+              <p class="text-muted-foreground leading-relaxed text-sm md:text-base pr-9 md:pr-11">
+                {step.content}
+              </p>
+            </section>
+          ))}
+        </div>
+
+        {/* FAQ */}
+        {article.faqs.length > 0 && (
+          <section class="mb-12">
+            <h2 class="font-heading text-2xl font-bold text-foreground mb-6">שאלות נפוצות</h2>
+            <div class="space-y-4">
+              {article.faqs.map((faq, i) => (
+                <div key={i} class="bg-secondary rounded-xl p-6 text-right">
+                  <h3 class="font-heading font-semibold text-foreground mb-2">{faq.question}</h3>
+                  <p class="text-muted-foreground">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <LeadCaptureBlock client:load />
+
+        {/* Related articles */}
+        {related.length > 0 && (
+          <section class="mt-12 text-right">
+            <h2 class="font-heading text-xl font-bold text-foreground mb-4">מאמרים קשורים</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {related.map((r) => (
+                <a
+                  key={r.slug}
+                  href={`/knowledge/${r.categorySlug}/${r.slug}`}
+                  class="bg-card border border-border rounded-lg p-4 hover:border-primary/30 hover:shadow-md transition-all group no-underline"
+                >
+                  <span class="text-xs text-primary font-medium block">{r.category}</span>
+                  <h3 class="font-heading font-semibold text-foreground group-hover:text-primary transition-colors mt-1 line-clamp-2">
+                    {r.h1}
+                  </h3>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </article>
+    </div>
+  </main>
+
+  <Footer client:load />
+</Base>

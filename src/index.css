@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Birzia';
+  src: url('/fonts/birzia/Birzia-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Birzia';
+  src: url('/fonts/birzia/Birzia-Medium.woff2') format('woff2'),
+       url('/fonts/birzia/Birzia-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Birzia';
+  src: url('/fonts/birzia/Birzia-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Birzia';
+  src: url('/fonts/birzia/Birzia-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  zoom: 0.8;
+}
+
+@media (max-width: 1024px) {
+  html {
+    zoom: 1;
+  }
+}
+
+/* ═══════════════════════════════════════
+   PREMIUM SCROLL & MOBILE ANIMATIONS
+═══════════════════════════════════════ */
+
+/* Keyframes */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Base reveal state — hidden until JS adds .revealed */
+.reveal {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.reveal.revealed {
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-duration: 0.7s;
+}
+
+/* Variants */
+.reveal-up.revealed       { animation-name: fadeUp; }
+.reveal-fade.revealed     { animation-name: fadeIn; }
+.reveal-right.revealed    { animation-name: slideInRight; }
+.reveal-left.revealed     { animation-name: slideInLeft; }
+.reveal-scale.revealed    { animation-name: scaleIn; }
+
+/* Stagger delays for child elements */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.12s; }
+.stagger-3 { animation-delay: 0.19s; }
+.stagger-4 { animation-delay: 0.26s; }
+.stagger-5 { animation-delay: 0.33s; }
+.stagger-6 { animation-delay: 0.40s; }
+
+/* Touch feedback — replaces hover on mobile */
+@media (max-width: 1024px) {
+  .touch-card {
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+  }
+  .touch-card:active {
+    transform: scale(0.96) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 20% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 15%;
+
+    /* Premium Trustworthy Blue */
+    --primary: 215 85% 45%; 
+    --primary-foreground: 0 0% 100%;
+
+    /* Deep Navy */
+    --primary-dark: 220 70% 20%;
+    --primary-dark-foreground: 0 0% 100%;
+
+    /* Very crisp, very light blue/grey for borders and sections */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 220 20% 15%;
+
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 10% 45%;
+
+    /* Energetic Action Red (For emergencies/CTAs) */
+    --accent: 10 85% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 15% 90%;
+    --input: 200 15% 90%;
+    --ring: 190 85% 48%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --font-heading: 'Birzia', 'Heebo', sans-serif;
+    --font-body: 'Assistant', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Diagonal section dividers */
+.section-divider-bottom {
+  position: relative;
+}
+.section-divider-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: inherit;
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 100%);
+  z-index: 1;
+}
+
+.section-divider-top {
+  position: relative;
+  padding-top: 60px;
+}
+
+/* ═══════════════════════════════════════════════════
+   WaterPipeScene — animation system
+   ═══════════════════════════════════════════════════ */
+
+/* Wave lines undulate left / right */
+@keyframes wps-wave-move {
+  0%, 100% { transform: translateX(0px);  }
+  50%       { transform: translateX(-32px); }
+}
+
+/* Shimmer ray sweeps across water surface */
+@keyframes wps-shimmer-sweep {
+  0%   { transform: translateX(-240px) skewX(-14deg); opacity: 0;   }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateX(1680px) skewX(-14deg); opacity: 0;   }
+}
+
+/* Cards gently bob up and down */
+@keyframes wps-float {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-7px); }
+}
+
+/* Ripple under cards expands and fades */
+@keyframes wps-ripple {
+  0%   { transform: scaleX(1);   opacity: 0.42; }
+  100% { transform: scaleX(2.4); opacity: 0;    }
+}
+
+/* Cards rise from water on first render */
+@keyframes wps-card-rise {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Apply to SVG elements ── */
+.wps-wave-back  { animation: wps-wave-move 7s ease-in-out infinite; }
+.wps-wave-front { animation: wps-wave-move 5s ease-in-out infinite reverse; }
+
+.wps-shimmer   { animation: wps-shimmer-sweep 10s ease-in-out infinite; }
+.wps-shimmer-2 { animation: wps-shimmer-sweep 10s ease-in-out infinite;
+                 animation-delay: -5s; }
+
+/* ── Apply to service cards ── */
+.wps-card-float   { animation: wps-float 3.8s ease-in-out infinite; }
+.wps-card-float-1 { animation-delay: 0s;    }
+.wps-card-float-2 { animation-delay: 0.65s; }
+.wps-card-float-3 { animation-delay: 1.30s; }
+
+.wps-card-rise   { animation: wps-card-rise 0.75s cubic-bezier(0.22,1,0.36,1) both; }
+.wps-card-rise-1 { animation-delay: 0.05s; }
+.wps-card-rise-2 { animation-delay: 0.20s; }
+.wps-card-rise-3 { animation-delay: 0.35s; }
+
+.wps-card-ripple { animation: wps-ripple 2.5s ease-out infinite; }
+
+/* Accessibility: honour reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .wps-wave-back,
+  .wps-wave-front,
+  .wps-shimmer,
+  .wps-shimmer-2,
+  .wps-card-float,
+  .wps-card-rise,
+  .wps-card-ripple {
+    animation: none;
+  }
+  .wps-card-rise { opacity: 1; transform: none; }
+}
+
+/* Accessibility overrides */
+.a11y-high-contrast {
+  filter: contrast(1.4);
+}
+
+.a11y-highlight-links a {
+  outline: 3px solid hsl(0 80% 55%) !important;
+  outline-offset: 2px;
+  text-decoration: underline !important;
+}
+
+.a11y-big-cursor,
+.a11y-big-cursor * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 4l20 8-8 4-4 8z' fill='black' stroke='white' stroke-width='1'/%3E%3C/svg%3E") 4 4, auto !important;
+}
+
+.a11y-stop-animations *,
+.a11y-stop-animations *::before,
+.a11y-stop-animations *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}

@@ -1,0 +1,29 @@
+---
+import Base from "@/layouts/Base.astro";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ServicesSection from "@/components/ServicesSection";
+
+const title = "שירותי אינסטלציה מקצועיים - כל השירותים | ואקנין אינסטלציה";
+const description = "צפו במגוון המלא של שירותי האינסטלציה שלנו: תיקון נזילות, פתיחת סתימות, תיקון דודי שמש, החלפת צנרת ועוד. שירות מקצועי עם טכנולוגיות מתקדמות.";
+---
+
+<Base title={title} description={description}>
+  <Navbar client:load />
+
+  <main class="py-14 md:py-24">
+    <div class="container px-4 sm:px-6">
+      <div class="mx-auto mb-10 md:mb-16 max-w-4xl text-center">
+        <h1 class="mb-4 md:mb-6 font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">מגוון שירותי האינסטלציה שלנו</h1>
+        <p class="text-base md:text-xl text-muted-foreground">
+          אנו מספקים פתרונות מקצועיים לכל בעיית אינסטלציה, החל מתיקונים קלים ועד לפרויקטים
+          מורכבים עם ציוד מתקדם וסטנדרט עבודה גבוה.
+        </p>
+      </div>
+
+      <ServicesSection client:load showAll />
+    </div>
+  </main>
+
+  <Footer client:load />
+</Base>
