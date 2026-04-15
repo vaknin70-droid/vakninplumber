@@ -11,6 +11,7 @@ export default defineConfig({
 		platformProxy: {
 			enabled: true,
 		},
+		imageService: "passthrough",
 	}),
 	image: {
 		layout: "constrained",
