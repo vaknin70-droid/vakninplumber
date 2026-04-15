@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ואקנין אינסטלציה - מומחים לצנרת PPR ותשתיות</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Assistant', sans-serif;
+      background: #fff;
+      color: #0f2757;
+      direction: rtl;
+    }
+
+    /* ────────────────────── NAV ────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,39,87,0.95);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(17,98,212,0.2);
+    }
+    /* LTR inside nav so logo sits physically on the right in the natural reading order */
+    .nav-inner {
+      direction: ltr;                          /* physical layout: logo on right, links on left */
+      max-width: 1920px; margin: 0 auto;
+      height: 64px; padding: 0 336px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    /* LEFT side: CTA + links */
+    .nav-left  { display: flex; align-items: center; gap: 24px; }
+    .nav-cta {
+      display: flex; align-items: center; gap: 8px;
+      background: #ee4b2b; color: #fff;
+      font-family: 'Assistant',sans-serif; font-weight: 700; font-size: 14px;
+      padding: 8px 12px; border-radius: 6px; text-decoration: none; white-space: nowrap;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);
+    }
+    .nav-cta img { width:16px; height:16px; }
+    /* nav links — text is Hebrew, so force RTL inside each link */
+    .nav-links { direction: rtl; display:flex; align-items:center; gap:24px; list-style:none; }
+    .nav-links a { font-size:14px; color:rgba(255,255,255,.8); text-decoration:none; }
+    .nav-links a:hover { color:#fff; }
+    /* RIGHT side: logo */
+    .nav-logo { direction: rtl; display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .nav-logo img { width:48px; height:40px; object-fit:contain; flex-shrink:0; }
+    .nav-logo-text {
+      font-family:'Heebo',sans-serif; font-weight:700; font-size:20px;
+      color:#fff; white-space:nowrap;
+    }
+
+    /* ────────────────────── HERO ────────────────────── */
+    .hero {
+      position: relative; height: 900px; overflow: hidden;
+      background: #f4f7fb;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* plumber photo — physically on the LEFT, always 50% of viewport */
+    .hero-photo {
+      position: absolute; top: -45px; left: 0;
+      width: 50%; height: calc(100% + 45px);
+      object-fit: cover; object-position: center top;
+      pointer-events: none;
+    }
+    /* radial glow from top-right (the text side) */
+    .hero-grad1 {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 110% 200% at 100% 0%,
+        rgba(255,255,255,.92) 0%, rgba(255,255,255,.62) 34%,
+        rgba(194,200,211,.48) 43%, rgba(133,145,167,.35) 51%,
+        rgba(71,89,122,.22) 60%, rgba(10,34,78,.08) 68%, rgba(10,34,78,.15) 100%);
+    }
+    /* white fade that always covers right 67.7% — overlap with photo creates smooth fade */
+    /* At any viewport: fade starts at 32.3% (left edge of photo end) and goes right */
+    .hero-grad2 {
+      position: absolute; top: 0; right: 0; bottom: 0; width: 67.7%;
+      background: linear-gradient(to right, rgba(244,247,251,0) 0%, rgba(244,247,251,.85) 40%, #f4f7fb 65%);
+    }
+    /* content lives on the RIGHT side */
+    .hero-body {
+      position: relative; z-index: 1;
+      width: 100%;
+      padding: 0 17.5%;
+      display: flex;
+      /* RTL: flex-start = physical RIGHT → text block sits on the right side */
+      justify-content: flex-start;
+    }
+    /* inner text block — always ~39% wide, matching Figma's 749/1920 ratio */
+    .hero-inner {
+      width: 39%; min-width: 560px; max-width: 749px;
+      display: flex; flex-direction: column; gap: 32px;
+      padding: 96px 0;
+      /* In RTL column-flex, align-items:flex-start = physical RIGHT */
+      align-items: flex-start;
+    }
+    .hero-h1 {
+      display: flex; flex-direction: column;
+      align-items: flex-start; /* RTL = physical right */
+      width: 100%;
+    }
+    .hero-h1 .l1 {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:83px; line-height:1;
+      color:#0f2757; letter-spacing:-1.7px; white-space:nowrap;
+    }
+    .hero-h1 .l2 {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:83px; line-height:1;
+      color:#1162d4; letter-spacing:-1.7px; white-space:nowrap;
+    }
+    .hero-h1 .l3 {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:72px; line-height:1;
+      color:#ee4b2b; letter-spacing:-1.7px; white-space:nowrap; padding-top:8px;
+    }
+    .hero-desc {
+      font-size:20px; line-height:28px; color:#334155;
+      text-align:right; max-width:672px;
+    }
+    /* buttons row — RTL flex-start = physical right; they flow right→left */
+    .hero-btns {
+      display:flex; gap:16px; align-items:center;
+      justify-content: flex-start; /* RTL row: start = right */
+      width: 100%;
+    }
+    .btn-wa {
+      display:flex; align-items:center; gap:12px;
+      height:56px; padding:0 29px;
+      background:rgba(255,255,255,.9); backdrop-filter:blur(2px);
+      border:1px solid rgba(17,98,212,.15); border-radius:16px;
+      box-shadow:0 18px 40px 0 rgba(13,33,74,.1);
+      font-size:18px; color:#0f2757; text-decoration:none; white-space:nowrap;
+    }
+    .btn-wa img,.btn-call img { width:16px; height:16px; flex-shrink:0; }
+    .btn-call {
+      display:flex; align-items:center; gap:12px;
+      height:56px; padding:0 28px;
+      background:#ee4b2b; border-radius:16px;
+      box-shadow:0 22px 45px 0 rgba(255,91,43,.28);
+      font-size:18px; font-weight:700; color:#fff; text-decoration:none; white-space:nowrap;
+    }
+    .hero-footnote { display:flex; flex-direction:column; gap:12px; max-width:576px; }
+    .hero-footnote-text { font-size:16px; line-height:26px; color:#334155; text-align:right; }
+    .hero-footnote-link {
+      display:inline-flex; gap:8px; align-items:center;
+      background:none; border:none; padding:0; cursor:pointer;
+    }
+    .hero-footnote-link img { width:16px; height:16px; }
+    .hero-footnote-link span { font-size:14px; font-weight:700; color:#1162d4; }
+
+    /* ────────────────────── SERVICES ────────────────────── */
+    .services {
+      padding: 96px 0;
+      display:flex; flex-direction:column; gap:25px; align-items:center;
+      background-image: url('./ASSETS/5ef7a3ac426ab06fcac2197caf58fab420516215.png');
+      background-size: cover;
+      background-position: center center;
+    }
+    /* heading wrapper: matches Figma Container with px-24px py-35px inside max-w-1280px */
+    .services-hdr {
+      width:100%; max-width:1280px; padding:35px 24px;
+      display:flex; flex-direction:column; align-items:center;
+    }
+    .services-heading {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:60px; line-height:60px;
+      letter-spacing:-1.2px; color:#0f2757; text-align:center;
+    }
+    /* 60px spacer below heading title (matches Figma's h-[60px] Container) */
+    .services-hdr-spacer { height:60px; width:100%; flex-shrink:0; }
+    .services-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:50px;
+      width:1314px; max-width:calc(100% - 48px);
+      /* cards use their natural height — no stretching */
+      align-items: start;
+    }
+    .svc-card {
+      backdrop-filter:blur(12px); background:rgba(255,255,255,.6);
+      border:1px solid rgba(255,255,255,.4); border-radius:40px;
+      padding:41px; display:flex; flex-direction:column; gap:24px; align-items:center;
+      box-shadow:0 25px 50px -12px rgba(0,0,0,.25);
+      position:relative; overflow:hidden;
+    }
+    .svc-card::before {
+      content:''; position:absolute; inset:0 -0.33px 0 0; border-radius:40px;
+      background:linear-gradient(129.041deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,0) 100%);
+      opacity:.5; pointer-events:none;
+    }
+    .svc-img-wrap {
+      width:144px; height:144px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+      position:relative;
+    }
+    .svc-img-wrap img { width:100%; height:100%; object-fit:contain; mix-blend-mode:multiply; }
+    .svc-title {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:30px; line-height:36px;
+      letter-spacing:-.6px; color:#0f2757; text-align:center; white-space:nowrap;
+    }
+    /* Figma: h-[84px] overflow-clip = exactly 3 lines × 28px */
+    .svc-desc {
+      font-size:18px; line-height:28px; color:#334155; text-align:center;
+      height:84px; overflow:hidden; width:100%;
+    }
+    .svc-btn {
+      margin-top:auto; width:100%;
+      background:linear-gradient(to left,#ee4b2b,#ff7a47);
+      border-radius:16px; box-shadow:0 10px 30px 0 rgba(255,91,43,.35);
+      padding:20px; display:flex; gap:12px; align-items:center; justify-content:center;
+      border:none; cursor:pointer; text-decoration:none;
+    }
+    .svc-btn img { width:24px; height:24px; flex-shrink:0; }
+    .svc-btn-text { font-size:19.4px; font-weight:800; color:#fff; white-space:nowrap; }
+    /* bottom "all services" pill button */
+    .services-all {
+      display:flex; align-items:center; gap:13px;
+      padding:14px 40px 22px 42px;
+      background:rgba(255,255,255,.8); backdrop-filter:blur(4px);
+      border:2px solid rgba(17,98,212,.2); border-radius:9999px;
+      box-shadow:0 8px 30px 0 rgba(3,105,161,.14);
+      font-size:20px; font-weight:700; color:#1162d4; text-decoration:none; white-space:nowrap;
+    }
+    .services-all img { width:24px; height:24px; }
+
+    /* ────────────────────── PRECISION (פחות ניחושים) ────────────────────── */
+    .precision {
+      background: #fff;
+      padding: 80px 0;
+    }
+    .precision-inner {
+      max-width: 1686px; margin: 0 auto; padding: 0 24px;
+    }
+    .precision-card {
+      background: #fff; border: 1px solid #f1f5f9; border-radius: 48px;
+      box-shadow: 0 32px 80px 0 rgba(0,0,0,.06);
+      padding: 49px;
+      display: flex; flex-direction: column; gap: 24px; align-items: center;
+      overflow: hidden; position: relative;
+    }
+    .precision-heading {
+      width: 100%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Heebo', sans-serif; font-weight: 900; font-size: 44px; line-height: 40px;
+      letter-spacing: -.9px; direction: rtl; flex-wrap: wrap; gap: 6px;
+    }
+    .precision-heading .ph-dark { color: #0f2757; }
+    .precision-heading .ph-blue { color: #1162d4; }
+    .precision-desc {
+      font-size: 18px; line-height: 28px; color: #475569;
+      text-align: center; direction: rtl;
+    }
+    .precision-features {
+      width: 552px; max-width: 100%;
+      display: flex; flex-direction: column; gap: 40px;
+      padding: 32px 0 16px;
+      /* direction:ltr so image-right rows keep physical right, image-left keep physical left */
+      direction: ltr;
+    }
+    .feat-row {
+      position: relative; height: 96px;
+      background: rgba(248,250,252,.2); border: 1px solid #f1f5f9;
+      border-radius: 32px; display: flex; align-items: center;
+      overflow: visible; /* images overflow row — clipped by .precision-card */
+    }
+    .feat-content {
+      flex: 1; display: flex; align-items: center; gap: 16px; padding: 0 32px;
+    }
+    /* rows where icon is on the left (rows 1, 3) */
+    .feat-content.icon-left  { flex-direction: row; }
+    /* rows where icon is on the right (rows 2, 4) */
+    .feat-content.icon-right { flex-direction: row-reverse; }
+    .feat-icon {
+      width: 56px; height: 56px; flex-shrink: 0; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+    .feat-icon img { width: 28px; height: 28px; display: block; }
+    .feat-label {
+      font-family: 'Assistant', sans-serif; font-weight: 800; font-size: 19.2px;
+      line-height: 28px; color: #0f2757; direction: rtl; flex: 1;
+    }
+    /* image overflow wrapper — sits at end/start of row */
+    .feat-img-box {
+      position: relative; height: 96px; flex-shrink: 0; width: 136px;
+    }
+    .feat-img-box img {
+      position: absolute; width: auto; pointer-events: none;
+    }
+    /* Row 1: smart cable — tall portrait, overflows above+below, on the RIGHT */
+    .feat-img-box.cable img  { right: -8px; top: -63px; height: 192px; }
+    /* Row 2: camera — landscape, overflows above+below, on the LEFT */
+    .feat-img-box.camera img { left: -8px;  top: -40px; height: 150px; }
+    /* Row 3: sewer equipment — overflows, on the RIGHT */
+    .feat-img-box.sewer img  { right: -8px; top: -33px; height: 134px; }
+    /* Row 4: PPR pipe — overflows above+below, on the LEFT */
+    .feat-img-box.ppr img    { left: -8px;  top: -40px; height: 150px; }
+
+    /* ────────────────────── TRUST ────────────────────── */
+    .trust {
+      background:#fff; padding:80px 320px;
+      display:flex; flex-direction:column; gap:56px; align-items:center;
+    }
+    .section-hdr {
+      text-align:center; display:flex; flex-direction:column;
+      gap:16px; align-items:center; max-width:700px;
+    }
+    .section-hdr h2 {
+      font-family:'Heebo',sans-serif; font-weight:700; font-size:36px; line-height:40px;
+      letter-spacing:-.72px; color:#0f2757;
+    }
+    .section-hdr p { font-size:18px; line-height:28px; color:#676f7e; }
+    .trust-grid {
+      display:grid; grid-template-columns:repeat(5,1fr); gap:24px;
+      width:100%; max-width:1280px;
+    }
+    .trust-item { display:flex; flex-direction:column; gap:12px; align-items:center; text-align:center; }
+    .trust-item img { width:160px; height:160px; object-fit:contain; }
+    .trust-item-title {
+      font-family:'Heebo',sans-serif; font-weight:700; font-size:16px;
+      line-height:24px; letter-spacing:-.32px; color:#0f2757;
+    }
+    .trust-item-desc { font-size:14px; line-height:20px; color:#676f7e; }
+
+    /* ────────────────────── BRANDS ────────────────────── */
+    .brands { background:#f8fafc; padding:80px 336px; }
+    .brands-card {
+      background:#0f2757; border-radius:40px; padding:48px;
+      display:flex; flex-direction:column; gap:24px; align-items:center;
+      box-shadow:0 25px 50px -12px rgba(0,0,0,.25);
+      max-width:1248px; margin:0 auto;
+    }
+    .brands-card h2 {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:48px; line-height:52px;
+      letter-spacing:-.96px; color:#fff; text-align:center;
+    }
+    .brands-card h2 span { color:#ee4b2b; display:block; }
+    .brands-card-desc { font-size:20px; line-height:28px; color:rgba(255,255,255,.7); text-align:center; }
+    .brands-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+      width:100%; padding-top:8px;
+    }
+    .brand-box {
+      background:#fff; border:1px solid rgba(255,255,255,.15); border-radius:16px;
+      height:96px; display:flex; align-items:center; justify-content:center;
+      padding:17px; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); overflow:hidden;
+    }
+    .brand-box img { max-width:110px; max-height:44px; object-fit:contain; }
+
+    /* ────────────────────── PORTFOLIO ────────────────────── */
+    .portfolio {
+      background:#fff; padding:80px 320px;
+      display:flex; flex-direction:column; gap:56px; align-items:center;
+    }
+    .portfolio-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+      width:100%; max-width:1280px;
+    }
+    .portfolio-item {
+      border-radius:12px; overflow:hidden; height:256px;
+      position:relative;
+      box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);
+      cursor:pointer;
+    }
+    .portfolio-item img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .35s ease; display:block;
+    }
+    .portfolio-item:hover img { transform:scale(1.06); }
+    .portfolio-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top,rgba(15,39,87,.65),rgba(15,39,87,0));
+      display:flex; align-items:flex-end; padding:16px;
+      opacity:0; transition:opacity .3s;
+    }
+    .portfolio-item:hover .portfolio-overlay { opacity:1; }
+    .portfolio-overlay span { font-size:14px; color:#fff; text-align:right; }
+
+    /* ────────────────────── REVIEWS ────────────────────── */
+    .reviews { background:#f1f5f9; padding:80px 320px; }
+    .reviews-inner {
+      max-width:1280px; margin:0 auto; padding:0 24px;
+      display:flex; flex-direction:column; gap:56px; align-items:center;
+    }
+    .reviews-grid {
+      display:grid; grid-template-columns:repeat(2,1fr); gap:24px;
+      max-width:900px; width:100%;
+    }
+    .review-card {
+      background:#fff; border:1px solid #e2e7e9; border-radius:12px; padding:29px;
+      display:flex; flex-direction:column; gap:12px; position:relative;
+      box-shadow:0 1px 2px 0 rgba(0,0,0,.05);
+    }
+    /* quote icon in the physical top-left corner */
+    .review-quote { position:absolute; left:16px; top:16px; width:32px; height:32px; }
+    /* stars: RTL flex-start = physical RIGHT */
+    .stars { display:flex; gap:4px; justify-content:flex-start; }
+    .stars img { width:16px; height:16px; }
+    .review-text { font-size:14px; line-height:23px; color:rgba(31,36,46,.8); text-align:right; }
+    /* author row: avatar on the LEFT (physical), name on the RIGHT — RTL flex-start = right */
+    .review-author { display:flex; gap:12px; align-items:center; justify-content:flex-start; padding-top:4px; }
+    .review-name { font-family:'Heebo',sans-serif; font-weight:700; font-size:14px; color:#0f2757; }
+    .avatar {
+      width:40px; height:40px; border-radius:50%; background:#1162d4;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:14px; color:#fff; flex-shrink:0;
+    }
+
+    /* ────────────────────── BLOG ────────────────────── */
+    .blog { background:#f8fafc; padding:80px 320px; }
+    .blog-inner {
+      max-width:1280px; margin:0 auto; padding:0 24px;
+      display:flex; flex-direction:column; gap:48px;
+    }
+    /* header row: heading on the RIGHT (RTL-start), link on the LEFT (RTL-end) */
+    .blog-hdr-row { display:flex; align-items:flex-end; justify-content:space-between; }
+    .blog-right { display:flex; flex-direction:column; gap:8px; align-items:flex-start; /* RTL = right */ }
+    .blog-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(17,98,212,.15); border-radius:9999px; padding:7px 13px;
+    }
+    .blog-badge span { font-size:14px; color:#1162d4; }
+    .blog-badge img { width:16px; height:16px; }
+    .blog-right h2 {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:36px;
+      line-height:40px; letter-spacing:-.72px; color:#0f2757;
+    }
+    .blog-right p { font-size:18px; color:#64748b; text-align:right; }
+    .blog-all { display:flex; gap:8px; align-items:center; text-decoration:none; }
+    .blog-all img { width:16px; height:16px; }
+    .blog-all span { font-size:14px; font-weight:600; color:#1162d4; }
+    .blog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .blog-card {
+      background:#fff; border:1px solid #f1f5f9; border-radius:16px;
+      height:352px; overflow:hidden; position:relative;
+      box-shadow:0 1px 2px 0 rgba(0,0,0,.05); cursor:pointer;
+    }
+    .blog-card:hover { box-shadow:0 4px 12px rgba(0,0,0,.1); }
+    .blog-card-top {
+      position:absolute; left:0; right:0; top:0; height:150px;
+      overflow:hidden; display:flex; align-items:center; justify-content:center;
+    }
+    .blog-top-bar {
+      position:absolute; top:0; left:0; right:0; height:6px;
+      background:linear-gradient(to left,#1162d4,#ee4b2b); opacity:.7; z-index:2;
+    }
+    .blog-top-bg {
+      position:absolute; inset:6px 0 0;
+      background:linear-gradient(159.861deg,rgba(15,39,87,.05) 0%,rgba(17,98,212,.1) 100%);
+    }
+    .blog-cat { position:relative; z-index:3; padding:6px 12px; border-radius:9999px; font-size:12px; font-weight:700; }
+    .blog-body {
+      position:absolute; left:0; right:0; top:150px; padding:20px;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .blog-meta {
+      display:flex; gap:8px; align-items:center;
+      justify-content:flex-start; /* RTL = right */ margin-bottom:4px;
+    }
+    .blog-meta span { font-size:12px; color:#94a3b8; }
+    .blog-meta img { width:16px; height:16px; }
+    .blog-card-title {
+      font-family:'Heebo',sans-serif; font-weight:700; font-size:15px; line-height:24px;
+      letter-spacing:-.32px; color:#0f2757; text-align:right;
+    }
+    .blog-card-desc { font-size:13px; line-height:20px; color:#64748b; text-align:right; height:60px; overflow:hidden; }
+    .blog-read { display:flex; gap:6px; align-items:center; justify-content:flex-start; margin-top:4px; }
+    .blog-read img { width:14px; height:14px; }
+    .blog-read span { font-size:14px; font-weight:700; color:#1162d4; }
+
+    /* ────────────────────── CTA ────────────────────── */
+    .cta {
+      position:relative; padding:96px 320px;
+      display:flex; align-items:center; justify-content:center; overflow:hidden;
+    }
+    .cta-bg {
+      position:absolute; inset:0;
+      background:linear-gradient(135deg,#0b2a61 0%,#132f6f 42%,#1d4fa3 100%);
+    }
+    .cta-glow1 {
+      position:absolute; top:-80px; right:8%; left:80%;
+      height:224px; border-radius:9999px;
+      background:rgba(255,255,255,.06); filter:blur(32px);
+    }
+    .cta-glow2 {
+      position:absolute; bottom:-80px; right:6%; left:79%;
+      height:288px; border-radius:9999px;
+      background:rgba(238,75,43,.2); filter:blur(32px);
+    }
+    .cta-card {
+      position:relative; z-index:1;
+      background:#f8fafc; backdrop-filter:blur(2px);
+      border:1px solid #e2e7e9; border-radius:35px;
+      box-shadow:0 30px 80px 0 rgba(4,16,42,.35);
+      padding:73px 49px 54px; max-width:1024px; width:100%;
+      display:flex; flex-direction:column; gap:20px; align-items:center;
+    }
+    .cta-card h2 {
+      font-family:'Heebo',sans-serif; font-weight:900; font-size:48px; line-height:1.05;
+      letter-spacing:-.96px; color:#0f2757; text-align:center;
+    }
+    .cta-card h2 span { color:#ee4b2b; }
+    .cta-desc { font-size:18px; line-height:28px; color:#0f2757; text-align:center; max-width:768px; }
+    .cta-features {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+      max-width:768px; width:100%; padding-top:12px;
+    }
+    .cta-feat {
+      border:1px solid rgba(15,39,87,.12); border-radius:16px; padding:17px;
+      display:flex; flex-direction:column; gap:4px; align-items:flex-start; /* RTL = right */
+      background:rgba(15,39,87,.04);
+    }
+    .cta-feat-label { font-size:14px; font-weight:700; color:#ee4b2b; }
+    .cta-feat-desc { font-size:14px; color:#0f2757; text-align:right; }
+    .cta-btns {
+      display:flex; gap:16px; align-items:center; justify-content:center; padding-top:12px;
+    }
+    .cta-btn-outline {
+      display:flex; align-items:center; gap:8px;
+      height:56px; padding:0 30px;
+      border:2px solid #0f2757; border-radius:16px;
+      font-size:18px; font-weight:600; color:#0f2757;
+      text-decoration:none; white-space:nowrap;
+    }
+    .cta-btn-outline img { width:16px; height:16px; }
+    .cta-btn-primary {
+      display:flex; align-items:center; gap:8px;
+      height:56px; padding:0 28px;
+      background:#ee4b2b; border:none; border-radius:16px;
+      box-shadow:0 20px 50px 0 rgba(255,91,43,.32);
+      font-size:18px; font-weight:700; color:#fff;
+      text-decoration:none; white-space:nowrap; cursor:pointer;
+    }
+    .cta-btn-primary img { width:16px; height:16px; }
+    .cta-trust { display:flex; gap:8px; align-items:center; }
+    .cta-trust img { width:16px; height:16px; }
+    .cta-trust span { font-size:14px; font-weight:700; color:#0f2757; }
+
+    /* ────────────────────── FOOTER ────────────────────── */
+    footer { background:#0f2757; padding:48px 0; }
+    .footer-inner {
+      max-width:1920px; margin:0 auto; padding:24px 336px 0;
+      display:flex; flex-direction:column; gap:32px;
+    }
+    /* 5-column RTL grid: col-1 (brand/logo) appears on the physical RIGHT */
+    .footer-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:32px; }
+    .footer-brand { display:flex; flex-direction:column; gap:16px; }
+    .footer-logo-row { display:flex; gap:8px; align-items:center; }
+    .footer-logo-row img { width:48px; height:40px; object-fit:contain; }
+    .footer-logo-name {
+      font-family:'Heebo',sans-serif; font-weight:700; font-size:20px;
+      color:#fff; letter-spacing:-.4px;
+    }
+    .footer-brand-desc { font-size:14px; line-height:23px; color:rgba(255,255,255,.8); text-align:right; }
+    .footer-col h4 {
+      font-family:'Heebo',sans-serif; font-weight:700; font-size:16px;
+      line-height:24px; color:#fff; letter-spacing:-.32px; margin-bottom:12px; text-align:right;
+    }
+    .footer-nav { list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .footer-nav a { font-size:14px; line-height:20px; color:rgba(255,255,255,.8); text-decoration:none; display:block; text-align:right; }
+    .footer-nav a:hover { color:#fff; }
+    .footer-nav a.accent { color:#ee4b2b; font-weight:600; }
+    .footer-phone-row { display:flex; gap:8px; align-items:center; justify-content:flex-start; /* RTL = right */ }
+    .footer-phone { font-size:18px; font-weight:700; color:#ee4b2b; direction:ltr; }
+    .footer-phone-row img { width:20px; height:20px; }
+    .footer-contact-desc { font-size:14px; line-height:20px; color:rgba(255,255,255,.8); text-align:right; }
+    .footer-bottom {
+      border-top:1px solid rgba(255,255,255,.1); padding-top:24px;
+      display:flex; flex-direction:column; gap:8px;
+    }
+    .footer-bottom-links { display:flex; gap:16px; align-items:center; justify-content:center; }
+    .footer-bottom-links a,.footer-bottom-links span { font-size:12px; color:rgba(255,255,255,.8); text-decoration:none; }
+    .footer-copy { font-size:12px; color:rgba(255,255,255,.8); text-align:center; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════ NAV ════════════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <!-- Physical LEFT: CTA + nav links -->
+    <div class="nav-left">
+      <a href="tel:052-8126653" class="nav-cta">
+        <span>התקשרו עכשיו</span>
+        <img src="./ASSETS/eebb765af7b75982f400825fd182fb82c3d1e42b.svg" alt="">
+      </a>
+      <ul class="nav-links">
+        <li><a href="#">צור קשר</a></li>
+        <li><a href="#">בלוג</a></li>
+        <li><a href="#">מרכז ידע</a></li>
+        <li><a href="#">כלים</a></li>
+        <li><a href="#">אזורי שירות</a></li>
+        <li><a href="#">שירותים</a></li>
+        <li><a href="#">אודות</a></li>
+        <li><a href="#">ראשי</a></li>
+      </ul>
+    </div>
+    <!-- Physical RIGHT: Logo -->
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-text">ואקנין אינסטלציה</div>
+      <img src="./ASSETS/cb3e567528578e02de9137a4e8235046406844b4.png" alt="לוגו">
+    </a>
+  </div>
+</nav>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<section class="hero">
+  <!-- Plumber photo — physically LEFT side -->
+  <img class="hero-photo" src="./ASSETS/9d954369b55f59c47ada2e5f41ed513837fe74cd.png" alt="אינסטלטור">
+  <!-- Gradient overlays -->
+  <div class="hero-grad1"></div>
+  <div class="hero-grad2"></div>
+  <!-- Text block — sits on the RIGHT -->
+  <div class="hero-body">
+    <div class="hero-inner">
+      <div class="hero-h1">
+        <span class="l1">אינסטלציה</span>
+        <span class="l2">שנגמרת</span>
+        <span class="l3">בפעם הראשונה</span>
+      </div>
+      <p class="hero-desc">
+        מגיעים מהר, עובדים נקי — ומסיימים את העבודה בפעם הראשונה. ואקנין אינסטלציה:<br>
+        מקצועיות, שקיפות ושקט נפשי מהרגע הראשון.
+      </p>
+      <div class="hero-btns">
+        <a href="https://wa.me/972528126653" class="btn-wa">
+          <span>שלחו וואטסאפ</span>
+          <img src="./ASSETS/ee202d028965f5fbdb4869e626f1f33c8802a399.svg" alt="">
+        </a>
+        <a href="tel:052-8126653" class="btn-call">
+          <span>התקשרו עכשיו</span>
+          <img src="./ASSETS/eebb765af7b75982f400825fd182fb82c3d1e42b.svg" alt="">
+        </a>
+      </div>
+      <div class="hero-footnote">
+        <p class="hero-footnote-text">ייעוץ ראשוני ברור, עבודה נקייה בשטח ושימוש בחומרים ואביזרים של מותגים מובילים כדי לתת פתרון שמחזיקה לאורך זמן.</p>
+        <button class="hero-footnote-link">
+          <img src="./ASSETS/aa9701f84699b21c407e7824660fe5386839b32e.svg" alt="">
+          <span>לראות שירותים שלנו</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ SERVICES ════════════════════ -->
+<section class="services">
+  <div class="services-hdr">
+    <h2 class="services-heading">השירותים שלנו</h2>
+    <div class="services-hdr-spacer"></div>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-img-wrap">
+        <img src="./ASSETS/fdb0038626824820aad61bcc78a144346b650e16.png" alt="תיקון והחלפת צנרת">
+      </div>
+      <div class="svc-title">תיקון והחלפת צנרת</div>
+      <div class="svc-desc">צנרת ישנה, חלודה או סדוקה? אנחנו מבצעים תיקון והחלפת צנרת מכל הסוגים עם החומרים האיכותיים ביותר בשוק.</div>
+      <a href="#" class="svc-btn">
+        <img src="./ASSETS/172d2f994ab94830958e1a9082b774c22b412deb.svg" alt="">
+        <span class="svc-btn-text">למידע נוסף</span>
+      </a>
+    </div>
+    <div class="svc-card">
+      <div class="svc-img-wrap">
+        <img src="./ASSETS/db1120b0b7093a1b2ea386cdf8eb37011797a79b.png" alt="צילום קווי ביוב">
+      </div>
+      <div class="svc-title">צילום קווי ביוב</div>
+      <div class="svc-desc">למה לנחש כשאפשר לראות? אנחנו משתמשים במצלמות צנרת מהמתקדמות בעולם כדי לתת לכם תמונה מלאה ומדויקת.</div>
+      <a href="#" class="svc-btn">
+        <img src="./ASSETS/172d2f994ab94830958e1a9082b774c22b412deb.svg" alt="">
+        <span class="svc-btn-text">למידע נוסף</span>
+      </a>
+    </div>
+    <div class="svc-card">
+      <div class="svc-img-wrap">
+        <img src="./ASSETS/a1eb99874afe80869ca2963d9ccefb569f60b7f3.png" alt="פתיחת סתימות">
+      </div>
+      <div class="svc-title">פתיחת סתימות</div>
+      <div class="svc-desc">סתימה בכיור, באמבטיה או בקו הביוב? אנחנו משתמשים בטכנולוגיות החדשות ביותר בשוק לפתיחת כל סוגי הסתימות.</div>
+      <a href="#" class="svc-btn">
+        <img src="./ASSETS/172d2f994ab94830958e1a9082b774c22b412deb.svg" alt="">
+        <span class="svc-btn-text">למידע נוסף</span>
+      </a>
+    </div>
+  </div>
+  <a href="#" class="services-all">
+    <img src="./ASSETS/76e7848676fc4379b1ca1fe7d9fdb9e7783938ca.svg" alt="">
+    לכל שירותי האינסטלציה שלנו
+  </a>
+</section>
+
+<!-- ════════════════════ TRUST ════════════════════ -->
+<section class="trust">
+  <div class="section-hdr">
+    <h2>למה לקוחות מרגישים בטוחים לבחור בנו</h2>
+    <p>כי אינסטלציה טובה היא לא רק לפתור תקלה, אלא לתת שירות מדויק, נקי ואמין מהשיחה הראשונה.</p>
+  </div>
+  <div class="trust-grid">
+    <div class="trust-item">
+      <img src="./ASSETS/c63bc0dfa1019ab1e052a7bd4e367dbb2b7584be.png" alt="">
+      <div class="trust-item-title">אחריות מלאה</div>
+      <div class="trust-item-desc">עבודה איכותית עם חומרים מהמותגים המובילים.</div>
+    </div>
+    <div class="trust-item">
+      <img src="./ASSETS/c63bc0dfa1019ab1e052a7bd4e367dbb2b7584be.png" alt="">
+      <div class="trust-item-title">מחיר הוגן</div>
+      <div class="trust-item-desc">הצעת מחיר שקופה והסבר ברור לפני שמתחילים.</div>
+    </div>
+    <div class="trust-item">
+      <img src="./ASSETS/c63bc0dfa1019ab1e052a7bd4e367dbb2b7584be.png" alt="">
+      <div class="trust-item-title">ציוד מתקדם</div>
+      <div class="trust-item-desc">טכנולוגיות וכלים מקצועיים לאבחון ולביצוע מדויק.</div>
+    </div>
+    <div class="trust-item">
+      <img src="./ASSETS/c63bc0dfa1019ab1e052a7bd4e367dbb2b7584be.png" alt="">
+      <div class="trust-item-title">שירות מסודר</div>
+      <div class="trust-item-desc">מענה מהיר, תיאום ברור ועמידה בהתחייבויות.</div>
+    </div>
+    <div class="trust-item">
+      <img src="./ASSETS/c63bc0dfa1019ab1e052a7bd4e367dbb2b7584be.png" alt="">
+      <div class="trust-item-title">ניסיון מוכח</div>
+      <div class="trust-item-desc">שנים של עבודת שטח, פתרונות מורכבים ולקוחות חוזרים.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ BRANDS ════════════════════ -->
+<section class="brands">
+  <div class="brands-card">
+    <h2>איכות מתחילה בבחירת<span>החומרים והציוד</span></h2>
+    <p class="brands-card-desc">אנחנו בוחרים רק את המותגים שעוברים את מבחן השטח שלנו,<br>כדי להבטיח לכם שקט נפשי לשנים קדימה.</p>
+    <div class="brands-grid">
+      <div class="brand-box"><img src="./ASSETS/a7cbfc0208003fff783b715a5ce764f3290bf681.png" alt="Geberit"></div>
+      <div class="brand-box"><img src="./ASSETS/5b59e4c5e1fe8ca7241c81b3305b8f5c08f5ec06.svg" alt="SP"></div>
+      <div class="brand-box"><img src="./ASSETS/074ef575aa13bb59bc091f7ce21dd88f5d76fb5d.png" alt="PLASSON"></div>
+      <div class="brand-box"><img src="./ASSETS/41a59c36f79fa4ecb4ea55c791f8b6395654d547.svg" alt="Huliot"></div>
+      <div class="brand-box"><img src="./ASSETS/9870604cc46d2427035dd75a59418ef4eecdb60a.svg" alt="RIDGID"></div>
+      <div class="brand-box"><img src="./ASSETS/f0a465a707e2cc5ef55b3b6107f460d7e9eaf630.svg" alt="Rothenberger"></div>
+      <div class="brand-box"><img src="./ASSETS/e0a7e812ef798653d865b6e1f1a84e81eccaedca.png" alt="Hansgrohe"></div>
+      <div class="brand-box"><img src="./ASSETS/2ccfa992c4ee35bb5f4c9ef98a4186bee1e9406c.png" alt="Grohe"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ PRECISION (פחות ניחושים, יותר דיוק) ════════════════════ -->
+<section class="precision">
+  <div class="precision-inner">
+    <div class="precision-card">
+
+      <!-- Heading -->
+      <div class="precision-heading">
+        <span class="ph-dark">פחות ניחושים,</span>
+        <span class="ph-blue">יותר דיוק</span>
+      </div>
+
+      <!-- Subtitle -->
+      <div class="precision-desc">
+        <p>הציוד המתקדם שלנו מאפשר לנו לראות מה שאחרים רק מנחשים,</p>
+        <p>ולטפל בבעיה מהשורש במינימום הרס.</p>
+      </div>
+
+      <!-- 4 feature rows -->
+      <div class="precision-features">
+
+        <!-- Row 1: Smart cable — icon LEFT, image RIGHT -->
+        <div class="feat-row">
+          <div class="feat-content icon-left">
+            <div class="feat-icon" style="background:#fee8d1">
+              <img src="./ASSETS/470c1a40947f0207a22b1372b9e3bce1587629e7.svg" alt="">
+            </div>
+            <span class="feat-label">טכנולוגיית סמארט כבל לצנרת</span>
+          </div>
+          <div class="feat-img-box cable">
+            <img src="./ASSETS/d88a8a6373d64d149867235a6c207b43dbec9ab3.png" alt="סמארט כבל">
+          </div>
+        </div>
+
+        <!-- Row 2: Camera — image LEFT, icon RIGHT -->
+        <div class="feat-row">
+          <div class="feat-img-box camera">
+            <img src="./ASSETS/14aaa93b2b2dd5955b2a51723fbb76148b9e73a4.png" alt="צילום קווי ביוב">
+          </div>
+          <div class="feat-content icon-right">
+            <span class="feat-label">צילום קווי ביוב וצנרת</span>
+            <div class="feat-icon" style="background:#fdcbc0">
+              <img src="./ASSETS/810654306381f8f4c6703406753d833be4ee0f63.svg" alt="">
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Sewer equipment — icon LEFT, image RIGHT -->
+        <div class="feat-row">
+          <div class="feat-content icon-left">
+            <div class="feat-icon" style="background:#fbebdc">
+              <img src="./ASSETS/a9a779b50b6dff62f43c05ed13a48aa1cccecad4.svg" alt="">
+            </div>
+            <span class="feat-label">ציוד פתיחת סתימות מקצועי</span>
+          </div>
+          <div class="feat-img-box sewer">
+            <img src="./ASSETS/0896c8e83d1339689148b93c5d7b3bafecb81fc1.png" alt="ציוד פתיחת סתימות">
+          </div>
+        </div>
+
+        <!-- Row 4: PPR — image LEFT, icon RIGHT -->
+        <div class="feat-row">
+          <div class="feat-img-box ppr">
+            <img src="./ASSETS/224b1d6a3432d008f715ff9061359bed1ddb6d42.png" alt="PPR">
+          </div>
+          <div class="feat-content icon-right">
+            <span class="feat-label">פתרונות PPR איכותיים</span>
+            <div class="feat-icon" style="background:#dce8e8">
+              <img src="./ASSETS/bd8a174e753a1f855a29859380268cd9c1118f9a.svg" alt="">
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /precision-features -->
+    </div><!-- /precision-card -->
+  </div><!-- /precision-inner -->
+</section>
+
+<!-- ════════════════════ PORTFOLIO ════════════════════ -->
+<section class="portfolio">
+  <div class="section-hdr">
+    <h2>העבודות שלנו</h2>
+    <p>צפו בדוגמאות מפרויקטי האינסטלציה המקצועיים שלנו.</p>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-item">
+      <img src="./ASSETS/18d7763d4bef606754e975dc57bef3cad1060e4d.png" alt="עבודות אינסטלציה מורכבות">
+      <div class="portfolio-overlay"><span>עבודות אינסטלציה מורכבות ופתיחת סתימות</span></div>
+    </div>
+    <div class="portfolio-item">
+      <img src="./ASSETS/75bd41ecec7414d66f132badbeea1df536c6312f.png" alt="חפירת תשתיות ביוב">
+      <div class="portfolio-overlay"><span>חפירת תשתיות ביוב עמוקות והתקנת שוחות</span></div>
+    </div>
+    <div class="portfolio-item">
+      <img src="./ASSETS/7838eaeb07473cd9936e4a37938b6f32388a0417.png" alt="עבודות תשתית">
+      <div class="portfolio-overlay"><span>עבודות תשתית ופיתוח עם ציוד מכני הנדסי</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ REVIEWS ════════════════════ -->
+<section class="reviews">
+  <div class="reviews-inner">
+    <div class="section-hdr">
+      <h2>מה הלקוחות אומרים</h2>
+      <p>המלצות אמיתיות מלקוחות מרוצים.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <img class="review-quote" src="./ASSETS/8b288652550a06146893f628da8b61237d60a43f.svg" alt="">
+        <div class="stars">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+        </div>
+        <div class="review-text">"מקצועיים, נקיים ובמחיר סביר. החליפו לנו את דוד השמש הישן והשירות היה מצוין מתחילתו ועד סופו."</div>
+        <div class="review-author">
+          <div class="avatar">ש</div>
+          <span class="review-name">שרה מ.</span>
+        </div>
+      </div>
+      <div class="review-card">
+        <img class="review-quote" src="./ASSETS/8b288652550a06146893f628da8b61237d60a43f.svg" alt="">
+        <div class="stars">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+        </div>
+        <div class="review-text">"התקשרתי בחצות עם צינור פרוץ. הם הגיעו תוך 30 דקות ותיקנו הכל במהירות. ממליץ בחום!"</div>
+        <div class="review-author">
+          <div class="avatar">ד</div>
+          <span class="review-name">דוד כ.</span>
+        </div>
+      </div>
+      <div class="review-card">
+        <img class="review-quote" src="./ASSETS/8b288652550a06146893f628da8b61237d60a43f.svg" alt="">
+        <div class="stars">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+        </div>
+        <div class="review-text">"האינסטלטור הכי טוב שהזמנו. פתר סתימה עקשנית ששני אינסטלטורים אחרים לא הצליחו להתמודד איתה. מחיר הוגן."</div>
+        <div class="review-author">
+          <div class="avatar">א</div>
+          <span class="review-name">אבי ר.</span>
+        </div>
+      </div>
+      <div class="review-card">
+        <img class="review-quote" src="./ASSETS/8b288652550a06146893f628da8b61237d60a43f.svg" alt="">
+        <div class="stars">
+          <img src="./ASSETS/4acab40b73431117cd61ad4be8df4eb3f386e3ec.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+          <img src="./ASSETS/135807a3c33babf3e3a4118b0d3cbd99c543c6bb.svg" alt="★">
+        </div>
+        <div class="review-text">"התקין ברז חדש לחדר האמבטיה בצורה מושלמת. עבודה נקייה ותקשורת מעולה לאורך כל התהליך."</div>
+        <div class="review-author">
+          <div class="avatar">ר</div>
+          <span class="review-name">רחל ל.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ BLOG ════════════════════ -->
+<section class="blog">
+  <div class="blog-inner">
+    <div class="blog-hdr-row">
+      <!-- RIGHT side: heading block (first in RTL = right) -->
+      <div class="blog-right">
+        <div class="blog-badge">
+          <span>הבלוג שלנו</span>
+          <img src="./ASSETS/0a00bbaff260d35f9f0176edade69c97e98c11fc.svg" alt="">
+        </div>
+        <h2>טיפים ועצות אינסטלציה</h2>
+        <p>מאמרים שימושיים לשמירה על מערכת האינסטלציה בבית.</p>
+      </div>
+      <!-- LEFT side: "all articles" link (last in RTL = left) -->
+      <a href="#" class="blog-all">
+        <img src="./ASSETS/aa9701f84699b21c407e7824660fe5386839b32e.svg" alt="">
+        <span>לכל המאמרים</span>
+      </a>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="blog-card-top">
+          <div class="blog-top-bar"></div>
+          <div class="blog-top-bg"></div>
+          <div class="blog-cat" style="background:#dbeafe;color:#1d4ed8;">נזילות מים</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <img src="./ASSETS/333265130b189207c12fac6f72d1f444d7ef59c2.svg" alt="">
+            <span>5 דק'</span>
+            <span>·</span>
+            <span>12 באפריל 2026</span>
+          </div>
+          <div class="blog-card-title">סימנים שיש לכם נזילה סמויה בבית</div>
+          <div class="blog-card-desc">נזילות סמויות יכולות לגרום לנזקים של אלפי שקלים לפני שאתם בכלל מבינים שיש בעיה. למדו לזהות את הסימנים המוקדמים ולחסוך כסף וכאב ראש.</div>
+          <div class="blog-read">
+            <img src="./ASSETS/891868fd43aff112725eb8e78836f9ccf16da0ca.svg" alt="">
+            <span>קראו עוד</span>
+          </div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-card-top">
+          <div class="blog-top-bar"></div>
+          <div class="blog-top-bg"></div>
+          <div class="blog-cat" style="background:#dcfce7;color:#15803d;">תחזוקה מונעת</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <img src="./ASSETS/333265130b189207c12fac6f72d1f444d7ef59c2.svg" alt="">
+            <span>4 דק'</span>
+            <span>·</span>
+            <span>28 במרץ 2026</span>
+          </div>
+          <div class="blog-card-title">איך למנוע סתימות בכיור — הרגלים שכל בעל בית צריך</div>
+          <div class="blog-card-desc">כיור סתום הוא אחד הטרדות הנפוצות ביותר בבית. הבשורה הטובה: 90% מהסתימות ניתן למנוע לגמרי עם כמה הרגלים פשוטים.</div>
+          <div class="blog-read">
+            <img src="./ASSETS/891868fd43aff112725eb8e78836f9ccf16da0ca.svg" alt="">
+            <span>קראו עוד</span>
+          </div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-card-top">
+          <div class="blog-top-bar"></div>
+          <div class="blog-top-bg"></div>
+          <div class="blog-cat" style="background:#ffedd5;color:#c2410c;">דוד שמש</div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            <img src="./ASSETS/ea04fb890ff59ad8c63a2494aea3269bfd077077.svg" alt="">
+            <span>6 דק'</span>
+            <span>·</span>
+            <span>15 במרץ 2026</span>
+          </div>
+          <div class="blog-card-title">מתי להחליף דוד שמש — הסימנים שאל תתעלמו מהם</div>
+          <div class="blog-card-desc">דוד שמש טוב יכול להחזיק 15–20 שנה, אך ישנם סימנים ברורים שמעידים שהגיע הזמן להחלפה. כדאי לדעת מה לחפש לפני שהוא מקלקל.</div>
+          <div class="blog-read">
+            <img src="./ASSETS/891868fd43aff112725eb8e78836f9ccf16da0ca.svg" alt="">
+            <span>קראו עוד</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ CTA ════════════════════ -->
+<section class="cta" id="contact">
+  <div class="cta-bg"></div>
+  <div class="cta-glow1"></div>
+  <div class="cta-glow2"></div>
+  <div class="cta-card">
+    <h2>רוצים פתרון מדויק, <span>נקי ומסודר באמת?</span></h2>
+    <p class="cta-desc">דברו איתנו לייעוץ ראשוני, אבחון מסודר והצעת מחיר ברורה לעבודת אינסטלציה שמבוססת על ניסיון, טכנולוגיות מתקדמות ושימוש במותגים המובילים בשוק.</p>
+    <div class="cta-features">
+      <div class="cta-feat">
+        <span class="cta-feat-label">ביצוע</span>
+        <span class="cta-feat-desc">עבודה נקייה עם גימור שמרגיש מקצועי</span>
+      </div>
+      <div class="cta-feat">
+        <span class="cta-feat-label">שקיפות</span>
+        <span class="cta-feat-desc">הסבר ברור על הפתרון, החומרים והשלבים</span>
+      </div>
+      <div class="cta-feat">
+        <span class="cta-feat-label">אבחון</span>
+        <span class="cta-feat-desc">מבינים את הבעיה לפני שמתחילים לעבוד</span>
+      </div>
+    </div>
+    <div class="cta-btns">
+      <a href="https://wa.me/972528126653" class="cta-btn-outline">
+        <span>שלחו וואטסאפ</span>
+        <img src="./ASSETS/604533832c787958f9beaadbf92e08761a1d696b.svg" alt="">
+      </a>
+      <a href="tel:052-8126653" class="cta-btn-primary">
+        <span>לתיאום שיחה עכשיו</span>
+        <img src="./ASSETS/eebb765af7b75982f400825fd182fb82c3d1e42b.svg" alt="">
+      </a>
+    </div>
+    <div class="cta-trust">
+      <img src="./ASSETS/1b935d3e2e20448093b216605f0f19295eb428e4.svg" alt="">
+      <span>שירות אישי, עבודה מדויקת ופתרונות שמחזיקים לאורך זמן</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <!-- Col 1 → physically RIGHT in RTL grid -->
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <div class="footer-logo-name">ואקנין אינסטלציה</div>
+          <img src="./ASSETS/f5156b98014bbb311f2248972637d5613b36e278.svg" alt="לוגו">
+        </div>
+        <p class="footer-brand-desc">שירותי אינסטלציה מקצועיים עם עבודה נקייה, ציוד מתקדם וחומרים מהמותגים המובילים בשוק.</p>
+      </div>
+      <div class="footer-col">
+        <h4>שירותים</h4>
+        <ul class="footer-nav">
+          <li><a href="#">פתיחת סתימות</a></li>
+          <li><a href="#">צילום קווי ביוב</a></li>
+          <li><a href="#">תיקון והחלפת צנרת</a></li>
+          <li><a href="#">תיקון דוד שמש ודוד חשמלי</a></li>
+          <li><a href="#">תיקון שירותים ואסלות</a></li>
+          <li><a href="#">התקנת ותיקון ברזים</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>אזורי שירות</h4>
+        <ul class="footer-nav">
+          <li><a href="#">אינסטלטור בתל אביב</a></li>
+          <li><a href="#">אינסטלטור ברמת גן</a></li>
+          <li><a href="#">אינסטלטור בגבעתיים</a></li>
+          <li><a href="#">אינסטלטור בפתח תקווה</a></li>
+          <li><a href="#">אינסטלטור בבני ברק</a></li>
+          <li><a href="#">אינסטלטור בחולון</a></li>
+          <li><a href="#" class="accent">לכל אזורי השירות...</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>קישורים</h4>
+        <ul class="footer-nav">
+          <li><a href="#">כל השירותים</a></li>
+          <li><a href="#">המלצות</a></li>
+          <li><a href="#">צור קשר</a></li>
+          <li><a href="#">מרכז הידע</a></li>
+          <li><a href="#" class="accent">מרכז הכלים</a></li>
+        </ul>
+      </div>
+      <!-- Col 5 → physically LEFT in RTL grid -->
+      <div class="footer-col">
+        <h4>דברו איתנו</h4>
+        <div class="footer-phone-row">
+          <img src="./ASSETS/a6979a6eae182e5d63c5c2b98218cf22e8133ab4.svg" alt="">
+          <span class="footer-phone">052-8126653</span>
+        </div>
+        <p class="footer-contact-desc">ייעוץ, הצעת מחיר ותיאום עבודה מקצועית באזור תל אביב והמרכז.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="#">הצהרת נגישות</a>
+        <span>|</span>
+        <a href="#">מדיניות פרטיות</a>
+      </div>
+      <p class="footer-copy">© 2026 ואקנין אינסטלציה. כל הזכויות שמורות.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -26,17 +26,17 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwind()],
 		optimizeDeps: {
-			include: ["react-router-dom"],
+			include: ["react-router-dom", "lucide-react"],
 		},
 		ssr: {
-			noExternal: ["react-router-dom"],
+			noExternal: ["react-router-dom", "lucide-react"],
 		},
 	},
 	fonts: [
 		{
 			provider: fontProviders.google(),
 			name: "Assistant",
-			cssVariable: "--font-sans",
+			cssVariable: "--font-body",
 			weights: [400, 500, 600, 700],
 			fallbacks: ["sans-serif"],
 		},
