@@ -8,7 +8,7 @@ import { d1, r2 } from "@emdash-cms/cloudflare";
 export default defineConfig({
 	output: "server",
 	adapter: cloudflare({
-		mode: "directory",
+		mode: "advanced",
 	}),
 	image: {
 		layout: "constrained",
