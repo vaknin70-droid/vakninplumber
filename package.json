@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node ./scripts/fix-wrangler.js",
     "preview": "astro preview",
     "astro": "astro",
     "start": "node ./dist/server/entry.mjs",
