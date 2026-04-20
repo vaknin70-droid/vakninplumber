@@ -3,6 +3,15 @@ pages_build_output_dir = "./dist"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
+[[d1_databases]]
+binding = "DB"
+database_name = "my-emdash-site"
+database_id = "32ef32fe-4215-40d8-9351-a262d5f3c879"
+
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "vaknin-plumbing-assets"
+
 
 [triggers]
 crons = []
