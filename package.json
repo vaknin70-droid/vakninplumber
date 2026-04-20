@@ -12,7 +12,7 @@
     "deploy": "echo 'Auto-deploy handled by Cloudflare Pages natively'"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.1.9",
+    "@astrojs/cloudflare": "^13.1.10",
     "@astrojs/node": "^9.0.0",
     "@astrojs/react": "^5.0.3",
     "@emdash-cms/cloudflare": "^0.3.0",

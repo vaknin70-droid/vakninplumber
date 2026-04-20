@@ -1,49 +1,78 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const filePath = path.resolve('dist/server/wrangler.json');
+const distPath = path.resolve('dist');
+const serverEntryPath = path.resolve('dist/server/entry.mjs');
+const wranglerFilePath = path.resolve('dist/server/wrangler.json');
 
-if (fs.existsSync(filePath)) {
+// 1. Fix wrangler.json first (as before)
+if (fs.existsSync(wranglerFilePath)) {
 	try {
-		const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-
+		const content = JSON.parse(fs.readFileSync(wranglerFilePath, 'utf-8'));
 		console.log('Cleaning wrangler.json for Cloudflare Pages compatibility...');
-
-		// 1. Remove reserved ASSETS binding if present
 		if (content.assets && content.assets.binding === 'ASSETS') {
-			console.log('- Removing reserved ASSETS binding');
 			delete content.assets;
 		}
-
-		// 2. Remove Worker-specific fields that conflict with Pages
-		const fieldsToRemove = [
-			'main',
-			'rules',
-			'no_bundle',
-			'pages_build_output_dir',
-			'configPath',
-			'userConfigPath',
-			'dev',
-			'topLevelName'
-		];
-
-		fieldsToRemove.forEach(field => {
-			if (Object.prototype.hasOwnProperty.call(content, field)) {
-				console.log(`- Removing Worker-specific field: ${field}`);
-				delete content[field];
-			}
-		});
-
-		// 3. Ensure triggers is correct
-		if (!content.triggers) {
-			content.triggers = { crons: [] };
-		}
-
-		fs.writeFileSync(filePath, JSON.stringify(content));
-		console.log('Success: wrangler.json is now optimized for Cloudflare Pages.');
+		const fieldsToRemove = ['main', 'rules', 'no_bundle', 'pages_build_output_dir', 'configPath', 'userConfigPath', 'dev', 'topLevelName'];
+		fieldsToRemove.forEach(field => delete content[field]);
+		if (!content.triggers) content.triggers = { crons: [] };
+		fs.writeFileSync(wranglerFilePath, JSON.stringify(content));
+		console.log('Success: wrangler.json is optimized.');
 	} catch (err) {
 		console.error('Error processing wrangler.json:', err);
 	}
+}
+
+// 2. Create the _worker.js shim in the root of dist
+// This fixes the 404 by giving Cloudflare Pages an entry point for SSR
+const workerShimPath = path.join(distPath, '_worker.js');
+if (fs.existsSync(serverEntryPath)) {
+	console.log('Creating _worker.js shim...');
+	// We use a relative import from the root of dist to the server folder
+	const shimContent = "export { default } from './server/entry.mjs';\n";
+	fs.writeFileSync(workerShimPath, shimContent);
+	console.log('Success: _worker.js shim created.');
 } else {
-	console.log('wrangler.json not found at ' + filePath + ', skipping fix.');
+	console.error('Error: server/entry.mjs not found. Cannot create shim.');
+}
+
+// 3. Move static assets from dist/client to dist/ root
+// Cloudflare Pages expects static assets at the root of the output directory
+const clientPath = path.join(distPath, 'client');
+if (fs.existsSync(clientPath)) {
+	console.log('Moving static assets from dist/client to dist/ root...');
+	const files = fs.readdirSync(clientPath);
+	files.forEach(file => {
+		const src = path.join(clientPath, file);
+		const dest = path.join(distPath, file);
+		
+		// If destination exists and is a directory, we might need to merge, 
+		// but usually Astro output is clean.
+		if (fs.existsSync(dest)) {
+			if (fs.statSync(dest).isDirectory()) {
+				// Simple recursive copy/move for directories like _astro
+				moveDirRecursive(src, dest);
+			} else {
+				fs.renameSync(src, dest);
+			}
+		} else {
+			fs.renameSync(src, dest);
+		}
+	});
+	console.log('Success: Static assets moved.');
+}
+
+function moveDirRecursive(src, dest) {
+	if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+	const files = fs.readdirSync(src);
+	files.forEach(file => {
+		const s = path.join(src, file);
+		const d = path.join(dest, file);
+		if (fs.statSync(s).isDirectory()) {
+			moveDirRecursive(s, d);
+		} else {
+			if (fs.existsSync(d)) fs.unlinkSync(d);
+			fs.renameSync(s, d);
+		}
+	});
 }
