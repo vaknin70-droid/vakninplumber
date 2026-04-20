@@ -17,7 +17,7 @@ if (fs.existsSync(wranglerFilePath)) {
 			'main', 'rules', 'no_bundle', 'configPath', 'userConfigPath', 'dev', 'topLevelName',
 			'definedEnvironments', 'ai_search_namespaces', 'ai_search', 'secrets_store_secrets', 
 			'unsafe_hello_world', 'flagship', 'worker_loaders', 'ratelimits', 'vpc_services', 
-			'vpc_networks', 'python_modules', 'images', 'kv_namespaces'
+			'vpc_networks', 'python_modules', 'images', 'kv_namespaces', 'd1_databases', 'r2_buckets'
 		];
 		fieldsToRemove.forEach(field => delete content[field]);
 		if (!content.triggers) content.triggers = { crons: [] };
