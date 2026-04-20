@@ -13,7 +13,12 @@ if (fs.existsSync(wranglerFilePath)) {
 		if (content.assets && content.assets.binding === 'ASSETS') {
 			delete content.assets;
 		}
-		const fieldsToRemove = ['main', 'rules', 'no_bundle', 'pages_build_output_dir', 'configPath', 'userConfigPath', 'dev', 'topLevelName'];
+		const fieldsToRemove = [
+			'main', 'rules', 'no_bundle', 'configPath', 'userConfigPath', 'dev', 'topLevelName',
+			'definedEnvironments', 'ai_search_namespaces', 'ai_search', 'secrets_store_secrets', 
+			'unsafe_hello_world', 'flagship', 'worker_loaders', 'ratelimits', 'vpc_services', 
+			'vpc_networks', 'python_modules'
+		];
 		fieldsToRemove.forEach(field => delete content[field]);
 		if (!content.triggers) content.triggers = { crons: [] };
 		fs.writeFileSync(wranglerFilePath, JSON.stringify(content));
