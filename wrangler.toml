@@ -12,9 +12,5 @@ database_id = "32ef32fe-4215-40d8-9351-a262d5f3c879"
 binding = "STORAGE"
 bucket_name = "vak-plumbing-assets"
 
-[[kv_namespaces]]
-binding = "SESSION"
-id = "00000000000000000000000000000000"
-
 [triggers]
 crons = []
