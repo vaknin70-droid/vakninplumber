@@ -20,7 +20,7 @@ async function fixWrangler() {
 			'main', 'rules', 'no_bundle', 'configPath', 'userConfigPath', 'dev', 'topLevelName',
 			'definedEnvironments', 'ai_search_namespaces', 'ai_search', 'secrets_store_secrets', 
 			'unsafe_hello_world', 'flagship', 'worker_loaders', 'ratelimits', 'vpc_services', 
-			'vpc_networks', 'python_modules', 'images', 'kv_namespaces', 'assets', 'ASSETS'
+			'vpc_networks', 'python_modules', 'images', 'assets', 'ASSETS'
 		];
 		
 		fieldsToRemove.forEach(field => delete content[field]);

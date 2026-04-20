@@ -15,3 +15,7 @@ bucket_name = "vaknin-plumbing-assets"
 
 [triggers]
 crons = []
+
+[[kv_namespaces]]
+binding = "SESSION"
+id = "a96dc20a78c74a518e6959c7477c4731"
