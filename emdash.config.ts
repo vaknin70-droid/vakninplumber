@@ -34,5 +34,19 @@ export default config({
         icon: fields.text({ label: "אייקון (Emoji)" }),
       },
     }),
+    collection({
+      name: "pages",
+      label: "עמודים",
+      slug: "pages",
+      path: "src/content/pages",
+      format: "json",
+      schema: {
+        title: fields.text({ label: "כותרת Meta (SEO)" }),
+        description: fields.textarea({ label: "תיאור Meta (SEO)" }),
+        hero_title: fields.text({ label: "כותרת ראשית (Hero)" }),
+        hero_subtitle: fields.textarea({ label: "תת-כותרת (Hero)" }),
+        content: fields.richText({ label: "תוכן העמוד" }),
+      },
+    }),
   ],
 });

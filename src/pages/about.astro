@@ -5,11 +5,38 @@ import Footer from "@/components/Footer";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import { History, Award, ShieldCheck, Clock, Hammer, Droplets, Waves, Flame, AlertTriangle, Search, CheckCircle2 } from "lucide-react";
 import plumberWorking from "@/assets/plumber-working.jpg";
+
+// Fetch data from D1 for manageable content
+const { DB } = Astro.locals.runtime?.env || {};
+let pageData: any = null;
+
+if (DB) {
+  try {
+    const result = await DB.prepare("SELECT * FROM ec_pages WHERE slug = ? AND status = 'published'").bind('about').first();
+    if (result) {
+      pageData = {
+        ...result,
+        content: typeof result.content === 'string' ? JSON.parse(result.content) : result.content
+      };
+    }
+  } catch (e) {
+    console.error("Failed to fetch about page from D1", e);
+  }
+}
+
+// Fallback content if DB is not available or entry is missing
+const content = pageData?.content || {
+  title: "אודות ואקנין אינסטלציה — מעל 20 שנות ניסיון ומקצועיות",
+  description: "ואקנין אינסטלציה - מומחים לפתרון תקלות מים וביוב מורכבות מעל 20 שנה. אמינות, שקיפות ועבודה נקייה ללא פשרות. שירות בפריסה ארצית.",
+  hero_title: "ואקנין אינסטלציה: מעל 20 שנה של מצוינות",
+  hero_subtitle: "כבר למעלה משני עשורים שאנחנו פותרים את תקלות המים המורכבות ביותר, בבתים פרטיים ובמוסדות ברחבי הארץ. השקט הנפשי שלכם מתחיל כאן."
+};
+
 ---
 
 <Base 
-  title="אודות ואקנין אינסטלציה — מעל 20 שנות ניסיון ומקצועיות" 
-  description="ואקנין אינסטלציה - מומחים לפתרון תקלות מים וביוב מורכבות מעל 20 שנה. אמינות, שקיפות ועבודה נקייה ללא פשרות. שירות בפריסה ארצית."
+  title={content.title} 
+  description={content.description}
 >
   <Navbar client:load />
   
@@ -34,11 +61,14 @@ import plumberWorking from "@/assets/plumber-working.jpg";
           />
           <div class="max-w-4xl w-full text-right">
             <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-[58px] font-extrabold leading-tight mb-8">
-              ואקנין אינסטלציה:
-              <span class="block text-[#ee4b2b] mt-4 font-extrabold">מעל 20 שנה של<br/>מצוינות</span>
+              {content.hero_title.split(':').map((part, i) => (
+                <span class={i === 1 ? "block text-[#ee4b2b] mt-4 font-extrabold" : ""}>
+                   {part}{i === 0 && content.hero_title.includes(':') ? ':' : ''}
+                </span>
+              ))}
             </h1>
             <p class="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed font-light max-w-2xl mt-8 mr-0 ml-auto">
-              כבר למעלה משני עשורים שאנחנו פותרים את תקלות המים המורכבות ביותר, בבתים פרטיים ובמוסדות ברחבי הארץ. השקט הנפשי שלכם מתחיל כאן.
+              {content.hero_subtitle}
             </p>
           </div>
         </div>
